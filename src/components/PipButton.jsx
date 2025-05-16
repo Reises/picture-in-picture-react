@@ -1,6 +1,4 @@
 import { useCallback,useState } from 'react';
-import ReactDOM from 'react-dom/client';
-import Clock from './Clock'; // Clock を直接使う
 
 export default function PipButton({pipRef}) {
     const [pipWin, setPipWin] = useState(null);
