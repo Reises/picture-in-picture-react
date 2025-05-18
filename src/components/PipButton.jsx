@@ -1,10 +1,10 @@
-import { useCallback,useState } from 'react';
+import { useState } from 'react';
 
 export default function PipButton({pipRef}) {
     const [pipWin, setPipWin] = useState(null);
 
     //  ピクチャーインピクチャーボタンがクリックされた時の処理
-    const handleClick = useCallback(async () => {
+    const handleClick = async () => {
         // Document Picture-in-Picture API がサポートされているか確認
         if (!("documentPictureInPicture" in window)) {
             alert("ピクチャーインピクチャーはサポートされていません");
@@ -33,6 +33,9 @@ export default function PipButton({pipRef}) {
         // ピクチャーインピクチャーのウィンドウを作成
         const newPipWindow = await window.documentPictureInPicture.requestWindow({ width, height });
         setPipWin(newPipWindow);
+
+        //  元の時計を非表示にする
+        pipContent.style.display = "none";
 
         // Tailwindのstyleをコピー
         document.querySelectorAll('link[rel=stylesheet], style').forEach((el) => {
@@ -72,9 +75,10 @@ export default function PipButton({pipRef}) {
         newPipWindow.addEventListener('unload', () => {
             clearInterval(timerId);
             setPipWin(null);
+            pipContent.style.display = '';
         });
 
-    }, [pipRef, pipWin]);
+    };
 
     return (
         <button
